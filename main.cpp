@@ -7,41 +7,37 @@ const char DFPav[] = "duomenys.txt";
 const char RFPav[] = "rezultatai.txt";
 const int MAX_DIENU = 100;
 
-struct dienos_rezultatas {
-    int menuo;
-    int diena;
-    float mase;
-    int baravyku;
-    int raudonvirsiu;
-};
-
-void skaitymas(int &n, dienos_rezultatas masyvas[]);
-void derlingiausios_dienos(int n, dienos_rezultatas masyvas[], int &derlingiausia_mase, int &derlingiausia_baravykais, int &derlingiausia_raudonvirsiais);
+void skaitymas(int &n, int menesiai[], int dienos[], float mases[], int baravykai[], int raudonvirsiai[]);
+void derlingiausios_dienos(int n, int menesiai[], int dienos[], float mases[], int baravykai[], int raudonvirsiai[], int &derlingiausia_mase, int &derlingiausia_baravykais, int &derlingiausia_raudonvirsiais);
 
 int main() {
     int n;
-    dienos_rezultatas masyvas[MAX_DIENU];
+    int menesiai[MAX_DIENU];
+    int dienos[MAX_DIENU];
+    float mases[MAX_DIENU];
+    int baravykai[MAX_DIENU];
+    int raudonvirsiai[MAX_DIENU];
     int derlingiausia_mase, derlingiausia_baravykais, derlingiausia_raudonvirsiais;
 
-    skaitymas(n, masyvas);
-    derlingiausios_dienos(n, masyvas, derlingiausia_mase, derlingiausia_baravykais, derlingiausia_raudonvirsiais);
+    skaitymas(n, menesiai, dienos, mases, baravykai, raudonvirsiai);
+    derlingiausios_dienos(n, menesiai, dienos, mases, baravykai, raudonvirsiai, derlingiausia_mase, derlingiausia_baravykais, derlingiausia_raudonvirsiais);
 
     ofstream rf (RFPav);
     rf << "Derlingiausia diena: ";
     if (derlingiausia_mase>=0) {
-        rf << masyvas[derlingiausia_mase].menuo << ' ' << masyvas[derlingiausia_mase].diena << endl;
+        rf << menesiai[derlingiausia_mase] << ' ' << dienos[derlingiausia_mase] << endl;
     } else {
         rf << "nėra" << endl;
     }
     rf << "Derlingiausia baravykų diena: ";
     if (derlingiausia_baravykais>=0) {
-        rf << masyvas[derlingiausia_baravykais].menuo << ' ' << masyvas[derlingiausia_baravykais].diena << endl;
+        rf << menesiai[derlingiausia_baravykais] << ' ' << dienos[derlingiausia_baravykais] << endl;
     } else {
         rf << "nėra" << endl;
     }
     rf << "Derlingiausia raudonviršių diena: ";
     if (derlingiausia_raudonvirsiais>=0) {
-        rf << masyvas[derlingiausia_raudonvirsiais].menuo << ' ' << masyvas[derlingiausia_raudonvirsiais].diena << endl;
+        rf << menesiai[derlingiausia_raudonvirsiais] << ' ' << dienos[derlingiausia_raudonvirsiais] << endl;
     } else {
         rf << "nėra" << endl;
     }
@@ -51,35 +47,35 @@ int main() {
     return 0;
 }
 
-void skaitymas(int &n, dienos_rezultatas masyvas[]) {
+void skaitymas(int &n, int menesiai[], int dienos[], float mases[], int baravykai[], int raudonvirsiai[]) {
     ifstream df (DFPav);
 
     df >> n;
     for(int i=0; i<n; i++) {
-        df >> masyvas[i].menuo >> masyvas[i].diena >> masyvas[i].mase >> masyvas[i].baravyku >> masyvas[i].raudonvirsiu;
+        df >> menesiai[i] >> dienos[i] >> mases[i] >> baravykai[i] >> raudonvirsiai[i];
     }
 
     df.close();
 }
 
-void derlingiausios_dienos(int n, dienos_rezultatas masyvas[], int &derlingiausia_mase, int &derlingiausia_baravykais, int &derlingiausia_raudonvirsiais) {
+void derlingiausios_dienos(int n, int menesiai[], int dienos[], float mases[], int baravykai[], int raudonvirsiai[], int &derlingiausia_mase, int &derlingiausia_baravykais, int &derlingiausia_raudonvirsiais) {
     int max_mase_indeksas;
     float max_mase=0;
     int max_baravykais_indeksas, max_baravyku=0;
     int max_raudonvirsiais_indeksas, max_raudonvirsiu=0;
 
     for(int i=0; i<n; i++) {
-        if (masyvas[i].mase > max_mase) {
+        if (mases[i] > max_mase) {
             max_mase_indeksas = i;
-            max_mase = masyvas[i].mase;
+            max_mase = mases[i];
         }
-        if (masyvas[i].baravyku > max_baravyku) {
+        if (baravykai[i] > max_baravyku) {
             max_baravykais_indeksas = i;
-            max_baravyku = masyvas[i].baravyku;
+            max_baravyku = baravykai[i];
         }
-        if (masyvas[i].raudonvirsiu > max_raudonvirsiu) {
+        if (raudonvirsiai[i] > max_raudonvirsiu) {
             max_raudonvirsiais_indeksas = i;
-            max_raudonvirsiu = masyvas[i].raudonvirsiu;
+            max_raudonvirsiu = raudonvirsiai[i];
         }
     }
     if (max_mase) {
